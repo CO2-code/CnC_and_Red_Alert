@@ -20,10 +20,7 @@ jobs:
         powershell -Command "Expand-Archive sdl2.zip -DestinationPath $env:RUNNER_TEMP\SDL2"
 
     - name: Configure
-      run: |
-        cmake -B build -A Win32 ^
-        -DSDL2_INCLUDE_DIR="$env:RUNNER_TEMP\SDL2\SDL2-2.30.2\include" ^
-        -DSDL2_LIBRARY="$env:RUNNER_TEMP\SDL2\SDL2-2.30.2\lib\x86\SDL2.lib"
+      run: cmake -B build -A Win32 -DSDL2_INCLUDE_DIR="$env:RUNNER_TEMP\SDL2\SDL2-2.30.2\include" -DSDL2_LIBRARY="$env:RUNNER_TEMP\SDL2\SDL2-2.30.2\lib\x86\SDL2.lib"
 
     - name: Build
       run: cmake --build build --config Release
