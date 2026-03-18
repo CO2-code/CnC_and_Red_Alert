@@ -14,20 +14,17 @@ jobs:
     - name: Setup CMake
       uses: lukka/get-cmake@latest
 
-    - name: Download SDL2
-      run: |
-        curl -L -o sdl2.zip https://www.libsdl.org/release/SDL2-devel-2.30.2-VC.zip
-        powershell -Command "Expand-Archive sdl2.zip -DestinationPath $env:RUNNER_TEMP\SDL2"
+    - name: Setup vcpkg
+      uses: lukka/run-vcpkg@v11
+
+    - name: Install SDL2
+      run: vcpkg install sdl2:x86-windows
 
     - name: Configure
-      run: cmake -B build -A Win32 -DSDL2_INCLUDE_DIR="$env:RUNNER_TEMP\SDL2\SDL2-2.30.2\include" -DSDL2_LIBRARY="$env:RUNNER_TEMP\SDL2\SDL2-2.30.2\lib\x86\SDL2.lib"
+      run: cmake -B build -A Win32 -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT\scripts\buildsystems\vcpkg.cmake"
 
     - name: Build
       run: cmake --build build --config Release
-
-    - name: Copy SDL2.dll
-      run: |
-        copy "$env:RUNNER_TEMP\SDL2\SDL2-2.30.2\lib\x86\SDL2.dll" build\Release\
 
     - name: Upload build
       uses: actions/upload-artifact@v4
