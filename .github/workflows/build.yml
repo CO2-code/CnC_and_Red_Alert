@@ -5,7 +5,8 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2019
+    runs-on: windows-latest
+    timeout-minutes: 20
 
     steps:
     - uses: actions/checkout@v4
